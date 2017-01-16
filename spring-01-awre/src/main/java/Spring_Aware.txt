@@ -1,0 +1,18 @@
+aware：英文翻译为 “意识”；
+
+Spring 的依赖注入的最大亮点就是所有的 Bean 对 Spring 容器的存在是没有意识的。既可以将容器替换成别的容器，如 Google Guice；
+
+但是在实际项目中，不可避免的要用到 Spring 容器本身的功能资源，这时的 Bean 必须要意识到 Spring 容器的存在，才能调用 Spring 所提供的资源，这就是所谓的 Spring Aware。
+其实 Spring Aware 本来就是 Spring 设计用来框架内部使用的，若使用了 Spring Aware，我们的 Bean 将会和 Spring 框架偶合；
+
+Spring 提供 的 Aware 接口如下：
+1，BeanNameAware------获取到容器中 Bean 的名称；
+2，BeanFactoryAware------获取当前 bean factory，这样可以调用容器的服务；
+3，ApplicationContextAware*------获取当前 application context，这样可以调用容器的服务；
+4，MessageSourceAware------获取 message source，这样可以获取文本信息；
+5，ApplicationEventPublisherAware------应用事件发布器，可以用来发布应用事件；
+6，ResourceLoaderAware------获取资源加载器，可以获取外部资源文件；
+
+Spring Aware 的目的就是为了让 Bean 获取 Spring 容器的服务。
+因为 AplicationContext 接口继承了 MessageSource 接口，ApplicationEventPublisher 接口和 ResourceLoader 接口，所以 Bean 继承 ApplicationContextAware
+就可以获得 Spring 容器的所有服务，但是原则上我们还是用到什么接口，就实现什么接口；
