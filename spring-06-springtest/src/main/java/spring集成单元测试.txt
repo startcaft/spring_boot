@@ -1,0 +1,8 @@
+@RunWith(SpringJunit4ClassRunner.class)
+在 JUint 环境下提供 Spring TestContext Framework 的功能。
+
+@ContextConfiguration 
+用来加载配置 Application，其中 classes 属性用来加载配置累，locations 属性用来加载 xml 配置文件。
+
+@ActiveProfiles 
+用来声明活动的 profile
