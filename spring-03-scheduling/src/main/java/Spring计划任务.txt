@@ -1,0 +1,4 @@
+从 Spring 3.1 开始，计划任务在 Spring 中的实现变得异常的简单。
+首先通过在配置累注解 @EnableScheduling 来开启对计划任务的支持；
+然后在要执行计划任务的方法上注解 @Scheduled 声明这是一个计划任务：
+	@Scheduled 支持多种类型的计划任务，包含 cron（按照指定时间执行，参照 UNIX和Linux 系统下的定时任务），fixDelay（每隔固定时间指定），fixRate
