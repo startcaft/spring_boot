@@ -1,0 +1,7 @@
+@Conditional 注解根据满足一个特定条件创建一个特定的Bean，
+例如，当某一个 jar 包在一个类路径下的时候，自动配置一个或多个 Bean。总的来说，就是根据特定条件来控制 Bean 的创建行为；
+Spring Boot 就是利用这个特性进行一些自动的配置。
+
+
+@Conditional 的参数 value 为Class<? extends Condition>[]，
+org.springframework.context.annotation.Condition 接口里的 matchers 方法用来构造判断条件。
