@@ -1,0 +1,35 @@
+基于Servlet3.0+无web.xml的配置
+
+1，在Spring MVC里实现 WebApplicationInitializer 接口便可实现等同于 web.xml的配置。
+
+2，创建一个普通的 Spring 配置类(@Configuration)，@EnableWebMvc 注解会开启一些默认的配置，如ViewResolver或者MessageConvert等。
+
+3，Spring MVC 个性化配置需要 配置类 继承一个 WebMvcConfigurerAdapter类，重写该类的方法，可以完成我们的常用配置。
+
+4，关于 @ControllerAdvice 注解，可以将对于控制器的全局配置放在一起，注解了 @Controller的类的方法可使用@ExceptionHanlder,@InitBinder,@ModelAttribute
+	注解到方法上，这对所有注解了@RequestMapping的控制期内的方法有效
+	@ExceptionHanlder：用于全局处理控制器里的异常。
+	@InitBinder：用来设置 WebDataBinder，用来绑定客户端请求参数。
+	@ModelAttribute：它本来的作用是绑定键值数据到 Model 中，这里是让全局的 @RequestMapping 都能够获取到在此设置的键值数据。
+
+5，Spring MVC 文件上传需要 commons-fileuoload包的支持，于此同时还需要配置一个 MultipartResolver 类型的 Bean，
+	而且form的表单的enctype="multipart/form-data"，
+	在控制的方法中，通过 MultipartFile file来接收一个文件，MultipartFile[] file来接收多个文件。
+	
+6，自定义HttpMessageConverter，继承 AbstactHttpMessageConverter<T> 类，并重写其方法。
+	配置自定义HttpMessageConverter的 Bean：
+	1，配置类重写 configureMessageConvertes 方法会覆盖掉 Spring MVC 默认注册的HttpMessageConverter
+	2，配置类重写 extendMessageConverts 方法仅添加我们需要的自定义的HttpMessage，不会覆盖掉默认注册的HttpMessageConverter。
+	
+7，SSE 服务器端推送技术
+	服务器输出的媒体类型必须为text/event-stream
+	客户端浏览器必须支持EventSource对象
+	监听EventSource对象的 open close message 事件
+	
+8，Spring MVC 的测试
+	为了测试 Spring MVC 项目通常不需要启动项目，需要一些 Servlet 相关的模拟对象，
+	比如 MockMVC，MockHttpServletRequest，MockHttpServletResponse，MockHttpSession等。
+	
+	@WebAppConfiguration("src/main/resources")------用来声明加载 ApplicationContext 是一个 WebApplicationContext，
+													它的属性指定的是 web 资源的位置，默认为 src/main/webapp，本列为 src/main/resources
+	MockMvc------模拟 MVC 对象，通过 MockMvcBuilders.webApplicationContextSetup(WebApplicationContext).build();
