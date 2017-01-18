@@ -18,7 +18,7 @@ user:
 		perfix------properties 中定义的属性的前缀
 		locations------ properties 文件的位置
 	
-	使用 @Configuration 注解，官方建议为项目添加 spring-boot-configuration-processor 模块的引用（配置处理器）
+	使用 @ConfigurationProperties 注解，官方建议为项目添加 spring-boot-configuration-processor 模块的引用（配置处理器）
 
 	
 多配置文件（Profile配置）
