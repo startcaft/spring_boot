@@ -1,0 +1,45 @@
+.properties 与 .yml
+*.properties 属性文件；属于比较常见的一种；
+*.yml 是yaml个是的文件，yaml是一种非常简洁的标记语言；
+
+在*.properties 中定义 user.address.stree = beijing 等价与yaml文件中的
+user:
+	address:
+		stree:beijing
+
+
+1，在Spring Boot项目中,只需要在 application.properties 定义属性，就可以直接使用 @Value 注入即可。
+
+2，类型安全的配置
+	若使用 @Value 的注入很多次，那么就显得格外麻烦。
+	Spring Boot 提供了基于类型安全的配置方法，通过在 Bean 上使用注解 @ConfigurationProperties 将 properties 属性和一个 Bean 及其属性关联，从而实现类型安全的配置。
+	
+	@ConfigurationProperties 注解的参数：
+		perfix------properties 中定义的属性的前缀
+		locations------ properties 文件的位置
+	
+	使用 @Configuration 注解，官方建议为项目添加 spring-boot-configuration-processor 模块的引用（配置处理器）
+
+	
+多配置文件（Profile配置）
+Profile 是 Spring 用来针对不同的环境对不同的配置提供的支持，全局 Profile 配置使用 application-{profile}.properties（如application-dev.properties）。
+【通过在 application.properties 中设置 spring.profiles.active = dev】 来指定活动的 Profile。
+
+当然，通过 @Profile() 注解和 SpringApplication 对象都可以指定活动的 Profile，但是还是推荐在 application.properties 中来配置；
+
+
+Spring Boot的日志配置
+Spring Boot 支持 Java Util Logging，Log4J，Log4J2 和 LogBack 作为日志框架，无论使用哪种，Spring Boot 已为当前使用日志框架的控制台输出
+及文件输出做好了配置。默认使用 LogBack 作为日志框架。（还是在application.properties中 配置）
+一些常规的日志配置
+logging.path  =F:/demo
+logging.file = demo.log
+logging.level.root = info
+logging.level.org.springframework.web = DEBUG
+
+**注意点
+1，若不配置具体的包的日志级别，日志文件信息将为空
+2，若只配置 logging.path，那么会在对应的文件夹下生成一个日志文件为spring.log
+3，若只配置 logging.file，那么会在项目的当前路径下生成一个demo.log日志文件
+4，logging.path 和 logging.file 同时配置，不会有在这个路径F:/demo/demo.log日志生成，它们不会进行叠加
+5，logging.path 和 logging.file 都可以是相对或者绝对路径
