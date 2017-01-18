@@ -1,0 +1,22 @@
+Spring Boot 在启动过程中增加了事件监听机制，为用户功能扩展提供了极大的便利。
+它支持的事件类型有以下四中：
+1，ApplicationStartedEvent
+	Spring Boot 启动开始时执行的事件，在该事件中可以获取到 SpringApplication 对象，可以做一些启动前的一些设置；
+	
+2，ApplicationEnvironmentPreparedEvent
+	Spring Boot 对应 Environment 已经准备完毕，但此时上下文 Context 还没有创建时的事件，在该事件中获取到 ConfigurableEnvironment 对象，
+	可以对配置信息做操作，如增加额外的配置信息等；
+	
+3，ApplicationPreparedEvent
+	Spring Boot 上下文 context 对象创建完成后执行的事件[但此时 spring 中的 bean 没有完全加载完成]，在该事件中获取 context 上下问对象，
+	可以将上下文 context 对象传递出去做一些额外的操作；
+	
+4，ApplicationFailedEvent
+	Spring Boot 启动异常时执行的事件，该事件中可以获取启动时发生的异常对象 Throwable，在异常发生时，最好添加虚拟机对应的钩子进行资源的回收与释放，
+	能友善的处理异常信息；
+
+
+
+实现监听的步骤如下：
+第一步：自定义监听类，实现 ApplicationListener<Event> 接口
+第二部：创建监听类的对象，并设置给 SpringApplication 对象。
