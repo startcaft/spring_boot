@@ -1,0 +1,17 @@
+@SpringBootApplication注解，源码如下
+
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Document
+@Inherited
+@Configuration
+@EnableAutoConfiguration
+@ComponentScan
+public @interface SpringBootApplication{
+	class<?>[] exclude() default{};
+}
+
+@Configuration：标识的类 作为 Spring 配置文件存在，一般类名为xxxxxApplication；
+@EnableAutoConfiguration：启动 spring boot 内置的自动配置（百度）；
+@ComponentScan：扫描 Bean，默认路径为 Application 类所在的 package 以及 package 下的子路径（本实例为:com.startcaft.springboot以及子包），
+				在  spring boot 中的 Bean 都放置在该路径以及子路径下；
