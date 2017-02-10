@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+	在开发中打印内容，使用 System.out.println() 和 Log4j 是人人皆知的方法了。
+	在实际开发中并不建议使用 System.out，因为大量的使用会增加资源的小号。
+	
+	而Log4j更为灵活，且在性能上也比 System.out 要搞，我们可以配置输出，可以指定日志文件分别记录不同的日志。
+	
+	spring boot 官方推荐使用 logback，说法是效率更高。
+	logback.xml日志配置文件可以根据不同环境来定义不同的日志输出。
+	
+	在代码中调用：(SLF4J API)
+	import org.slf4j.Logger;
+	import org.slf4j.LoggerFactory;
+
+	private Logger logger =  LoggerFactory.getLogger(this.getClass());
+ -->
+<configuration>
+
+	<!-- spring-boot-1.x.x.RELEASE.jar 下 -->
+	<!-- 包含两个appender---一个是控制台，一个是文件 -->
+	<!-- 分别定义在console-appender.xml和file-appender.xml中 -->
+	<include resource="org/springframework/boot/logging/logback/base.xml" />
+	
+	<!-- 文件定义了一个 捕获 org.springframework.web 的日志，日志级别是 INFO -->
+	<!-- 同时对于应用的日志级别也可以通过application.properties进行定义 -->
+	<!-- * 如果在 logback.xml 和 application.properties 中定义了相同的配置 -->
+	<!-- 但是输出级别不同，则实际上 application.properties 的优先级高于 logback.xml * -->
+ 	<logger name="org.springframework.web" level="INFO"/>
+ 	<logger name="org.springboot.sample" level="TRACE" />
+    
+    
+    <!-- 
+    	多环境日志输出：
+    	根据不同的环境（dev：开发环境，test：测试环境，prod：生产环境）来定义不同的日志输出，
+    	在logback-spring.xml文件中使用 springProfile 节点来定义。
+    	
+    	注意：文件名不是logback.xml，想使用spring来扩展profile支持，要以logback-spring.xml命名
+     -->
+    <!-- 测试环境+开发环境. 多个使用逗号隔开. -->
+    <springProfile name="test,dev">
+        <logger name="org.springframework.web" level="INFO"/>
+        <logger name="org.springboot.sample" level="INFO" />
+        <logger name="com.startcaft.www" level="info" />
+    </springProfile>
+    
+    <!-- 生产环境. -->
+    <springProfile name="prod">
+        <logger name="org.springframework.web" level="ERROR"/>
+        <logger name="org.springboot.sample" level="ERROR" />
+        <logger name="com.startcaft.www" level="ERROR" />
+    </springProfile>
+    
+</configuration>
