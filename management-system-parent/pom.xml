@@ -1,0 +1,58 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<!-- 父模块GAV(子模块可以继承G和V )，以及打包方式 -->
+	<groupId>com.startcaft.www</groupId>
+	<artifactId>management-system-parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<!-- 可有可无 -->
+	<name>management-system-parent</name>
+	<url>http://maven.apache.org</url>
+
+	<!-- 需要聚集的子模块 -->
+	<modules>
+		<module>../permission-core</module>
+		<module>../management-system-web</module>
+	</modules>
+
+	<!-- 自定义属性 -->
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jdk.version>1.8</jdk.version>
+	</properties>
+
+	<!-- 定义依赖管理 -->
+	<dependencyManagement>
+		<dependencies>
+			<!-- Import dependency management from Spring Boot -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>1.4.4.RELEASE</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<!--如果要把springboot工程打包成war执行，需要该jar -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-legacy</artifactId>
+				<version>1.0.2.RELEASE</version>
+			</dependency>
+			<!-- 生成 jpa 2.0 元模型类 -->
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-jpamodelgen</artifactId>
+				<version>5.0.11.Final</version>
+			</dependency>
+			<!-- Druid DataSourceImpl -->
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>druid</artifactId>
+				<version>1.0.18</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+</project>
