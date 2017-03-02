@@ -54,6 +54,22 @@
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<!-- Spring 单元测试支持 -->
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+		</dependency>
+		<!-- Spring 邮件,计划任务，缓存等第三方支持 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+         	<artifactId>spring-context-support</artifactId>
+		</dependency>
+		<!-- Ehcache -->
+		<dependency>
+           <groupId>net.sf.ehcache</groupId>
+           <artifactId>ehcache</artifactId>
+       </dependency>
 	</dependencies>
 
 	<build>

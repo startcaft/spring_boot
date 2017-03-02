@@ -16,10 +16,7 @@
     
     <!-- 生产环境. -->
     <springProfile name="prod">
-        <logger name="org.springframework.web" level="ERROR"/>
-        <logger name="com.permission.controller" level="ERROR" />
         <logger name="com.permission.service" level="ERROR" />
-        <logger name="com.management.config" level="ERROR" />
     </springProfile>
     
 </configuration>
