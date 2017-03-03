@@ -1,7 +1,7 @@
 package com.permission.core.vo;
 
 
-public class DictionaryTypeVo implements java.io.Serializable {
+public class DictionaryTypeVo extends IdVo implements java.io.Serializable {
 
 	/**
 	 * 
