@@ -1,15 +1,18 @@
 package com.permission.service.impl;
 
 
+import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachePut;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import com.permission.core.entity.DictionaryType;
 import com.permission.core.exception.ParamterNullException;
 import com.permission.core.exception.RecordExistException;
 import com.permission.core.vo.DictionaryTypeVo;
+import com.permission.core.vo.NodeTree;
 import com.permission.repository.DictionaryTypeRepository;
 import com.permission.service.DictionaryService;
 
@@ -67,6 +70,42 @@ public class DictionaryServiceImpl extends BaseService implements DictionaryServ
 			}
 			return result;
 		}
-		
 	}
+
+	@Override
+	public void recursiveTree(NodeTree node) throws Exception {
+		
+		Specification<DictionaryType> typeSpec = new TreeSpecification<>("parentType", null, node.getId());
+		
+		List<DictionaryType> childs = typeRepo.findAll(typeSpec);
+		if (!childs.isEmpty()) {
+			for (DictionaryType dicType : childs) {
+				
+				NodeTree n = new NodeTree(dicType.getId(), dicType.getParentType().getId(), dicType.getName());
+				node.getChildren().add(n);
+				
+				recursiveTree(n);//递归
+			}
+		}
+	}
+
+	@Override
+	public DictionaryTypeVo getById(Integer id) throws Exception {
+		{
+			if (id == null) {
+				throw new ParamterNullException("id", DictionaryType.class);
+			}
+		}
+		DictionaryTypeVo vo = new DictionaryTypeVo();
+		DictionaryType model = typeRepo.findOne(id);
+		if (model != null) {
+			BeanUtils.copyProperties(model, vo);
+			if(model.getParentType() != null){
+				vo.setPid(model.getParentType().getId());
+				vo.setpName(model.getParentType().getName());
+			}
+		}
+		return vo;
+	}
+	
 }

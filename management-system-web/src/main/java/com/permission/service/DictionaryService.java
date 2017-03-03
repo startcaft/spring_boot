@@ -1,6 +1,8 @@
 package com.permission.service;
 
+
 import com.permission.core.vo.DictionaryTypeVo;
+import com.permission.core.vo.NodeTree;
 
 public interface DictionaryService {
 	
@@ -16,4 +18,16 @@ public interface DictionaryService {
 	 * @param vo 不能为空，否则直接抛出异常
 	 */
 	boolean insertRecord(DictionaryTypeVo vo) throws Exception;
+	
+	/**
+	 * 获取指定节点的树状结构
+	 * @param node 不能为空
+	 */
+	public void recursiveTree(NodeTree node) throws Exception;
+	
+	/**
+	 * 获取指定的字典类型
+	 * @param id
+	 */
+	DictionaryTypeVo getById(Integer id) throws Exception;
 }
