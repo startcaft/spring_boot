@@ -30,4 +30,10 @@ public interface DictionaryService {
 	 * @param id
 	 */
 	DictionaryTypeVo getById(Integer id) throws Exception;
+	
+	/**
+	 * 更新指定的数据
+	 * @param vo 不能为空，却vo中的id不能为空
+	 */
+	boolean modifyRecord(DictionaryTypeVo vo) throws Exception;
 }

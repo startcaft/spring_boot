@@ -4,7 +4,9 @@ package com.permission.service.impl;
 import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -71,7 +73,7 @@ public class DictionaryServiceImpl extends BaseService implements DictionaryServ
 			return result;
 		}
 	}
-
+	
 	@Override
 	public void recursiveTree(NodeTree node) throws Exception {
 		
@@ -88,7 +90,8 @@ public class DictionaryServiceImpl extends BaseService implements DictionaryServ
 			}
 		}
 	}
-
+	
+	@Cacheable(value=CACHE_NAME,key="'dic_type_' + #id")
 	@Override
 	public DictionaryTypeVo getById(Integer id) throws Exception {
 		{
@@ -106,6 +109,37 @@ public class DictionaryServiceImpl extends BaseService implements DictionaryServ
 			}
 		}
 		return vo;
+	}
+	
+	@CachePut(value=CACHE_NAME,key="'dic_type_' + #vo.id")
+	@CacheEvict(value=CACHE_NAME,key="'dic_type_' + #vo.id")
+	@Override
+	public boolean modifyRecord(DictionaryTypeVo vo) throws Exception {
+		{
+			if(vo == null || vo.getId() == null){
+				throw new ParamterNullException("vo或vo中的id属性", DictionaryTypeVo.class);
+			}
+		}
+		boolean result = false;
+		//先检查需要更新的名称是否为空
+		if (!StringUtils.isEmpty(vo.getName())) {
+			if(this.checkNameExists(vo.getName())){
+				throw new RecordExistException("name");
+			}
+		}
+		//执行更新
+		DictionaryType model = new DictionaryType();
+		BeanUtils.copyProperties(vo, model);
+		if(vo.getPid() != null){
+			DictionaryType parent = new DictionaryType();
+			parent.setId(vo.getPid());
+			
+			model.setParentType(parent);
+		}
+		typeRepo.saveAndFlush(model);
+		result = false;
+		
+		return result;
 	}
 	
 }

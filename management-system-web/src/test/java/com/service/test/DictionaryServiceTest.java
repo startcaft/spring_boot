@@ -63,5 +63,14 @@ public class DictionaryServiceTest {
 		service.recursiveTree(node);
 		
 		System.out.println(node);
+		
+		///////////////////////////////////////////////////////
+		
+		NodeTree node1 = new NodeTree();
+		node1.setId(13);
+		node1.setName("人口基本信息包含字典");
+		
+		service.recursiveTree(node1);
+		System.out.println(node1);
 	}
 }
