@@ -23,6 +23,11 @@
 		diskPersistent="false" 
 		timeToIdleSeconds="0"
 		timeToLiveSeconds="300" 
-		memoryStoreEvictionPolicy="LRU" />
+		memoryStoreEvictionPolicy="LRU" >
+		
+		<!-- cache监听器工厂，用于生产监听器实例 -->
+		<cacheEventListenerFactory class="com.management.app.listsner.JpaCacheListsnerFactory"/>
+		
+	</cache>
 
 </ehcache>

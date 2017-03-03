@@ -11,6 +11,7 @@
         <logger name="org.springframework.web" level="INFO"/>
         <logger name="com.permission.controller" level="INFO" />
         <logger name="com.permission.service" level="INFO" />
+        <logger name="com.management.app" level="INFO"></logger>
         <logger name="com.management.config" level="INFO" />
     </springProfile>
     
