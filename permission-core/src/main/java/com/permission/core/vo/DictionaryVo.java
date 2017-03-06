@@ -2,7 +2,7 @@ package com.permission.core.vo;
 
 import com.permission.core.enums.StateEnum;
 
-public class DictionaryVo implements java.io.Serializable {
+public class DictionaryVo extends IdVo implements java.io.Serializable {
 
 	/**
 	 * 
