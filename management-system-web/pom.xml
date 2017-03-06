@@ -32,10 +32,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-test</artifactId>
 		</dependency>
-		<!-- 依赖 permission-core -->
+		<!-- 依赖 permission-repository -->
 		<dependency>
 			<groupId>com.startcaft.www</groupId>
-			<artifactId>permission-core</artifactId>
+			<artifactId>permission-repository</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<!-- mysql jdbc driver -->
