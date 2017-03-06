@@ -14,6 +14,7 @@
 	<!-- 需要聚集的子模块 -->
 	<modules>
 		<module>../permission-core</module>
+		<module>../permission-repository</module>
 		<module>../management-system-web</module>
 	</modules>
 
