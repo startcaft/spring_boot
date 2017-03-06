@@ -2,6 +2,7 @@ package com.permission.service;
 
 
 import com.permission.core.vo.DictionaryTypeVo;
+import com.permission.core.vo.DictionaryVo;
 import com.permission.core.vo.NodeTree;
 
 public interface DictionaryService {
@@ -36,4 +37,13 @@ public interface DictionaryService {
 	 * @param vo 不能为空，却vo中的id不能为空
 	 */
 	boolean modifyRecord(DictionaryTypeVo vo) throws Exception;
+	
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	/**
+	 * 添加字典项目
+	 * @param vo 字典项vo对象
+	 */
+	boolean insertDicItem(DictionaryVo vo) throws Exception;
 }

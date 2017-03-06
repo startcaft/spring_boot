@@ -7,11 +7,11 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
+
 
 
 /**
@@ -64,9 +64,9 @@ public abstract class BaseService {
 		}
 		
 		/**
-		 * @param joinAttributeName    	父节点属性
-		 * @param searchAttributeName	父节点属性的主键属性名称，一般继承自IdEntity
-		 * @param searchAttributeValue	父节点属性的主键值
+		 * @param joinAttributeName    	父节点属性，不能为空
+		 * @param searchAttributeName	父节点属性的主键属性名称，一般继承自IdEntity，默认为id
+		 * @param searchAttributeValue	父节点属性的主键值，不能为空
 		 */
 		public TreeSpecification(String joinAttributeName, String searchAttributeName, Integer searchAttributeValue) {
 			super();
@@ -89,6 +89,7 @@ public abstract class BaseService {
 				if(logger.isErrorEnabled()){
 					logger.error("强制规定要查询的父节点的值不能为空");
 				}
+				return null;
 			}
 			Join<T, T> parentJoin = root.join(this.joinAttributeName, JoinType.INNER);
 			String attrName = StringUtils.isEmpty(this.searchAttributeName) ? "id" : this.searchAttributeName;

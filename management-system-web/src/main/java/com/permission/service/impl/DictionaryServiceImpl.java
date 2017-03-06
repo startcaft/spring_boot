@@ -10,11 +10,15 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+
+import com.permission.core.entity.Dictionary;
 import com.permission.core.entity.DictionaryType;
 import com.permission.core.exception.ParamterNullException;
 import com.permission.core.exception.RecordExistException;
 import com.permission.core.vo.DictionaryTypeVo;
+import com.permission.core.vo.DictionaryVo;
 import com.permission.core.vo.NodeTree;
+import com.permission.repository.DictionaryRepository;
 import com.permission.repository.DictionaryTypeRepository;
 import com.permission.service.DictionaryService;
 
@@ -23,6 +27,9 @@ public class DictionaryServiceImpl extends BaseService implements DictionaryServ
 	
 	@Autowired
 	private DictionaryTypeRepository typeRepo;
+	
+	@Autowired
+	private DictionaryRepository itemRepo;
 	
 	@Override
 	public boolean checkNameExists(String dicTypeName) throws Exception {
@@ -137,8 +144,37 @@ public class DictionaryServiceImpl extends BaseService implements DictionaryServ
 			model.setParentType(parent);
 		}
 		typeRepo.saveAndFlush(model);
-		result = false;
+		result = true;
 		
+		return result;
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	@CachePut(value=CACHE_NAME,key="'dic_item_' + #vo.id")
+	@Override
+	public boolean insertDicItem(DictionaryVo vo) throws Exception {
+		{
+			if(vo == null){
+				throw new ParamterNullException("vo", DictionaryVo.class);
+			}
+		}
+		//执行insert操作
+		boolean result = false;
+		Dictionary model = new Dictionary();
+		BeanUtils.copyProperties(vo, model);
+		if (vo.getDicTypeId() != null) {
+			DictionaryType type = new DictionaryType();
+			type.setId(vo.getDicTypeId());
+			
+			model.setDictionaryType(type);
+		}
+		
+		itemRepo.save(model);
+		if(model.getId() != null){
+			vo.setId(model.getId());//缓存时候使用
+			result = true;
+		}
 		return result;
 	}
 	
