@@ -15,6 +15,7 @@
 	<modules>
 		<module>../permission-core</module>
 		<module>../permission-repository</module>
+		<module>../permission-service</module>
 		<module>../management-system-web</module>
 	</modules>
 
