@@ -10,7 +10,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import com.management.app.App;
 import com.permission.core.exception.ParamterNullException;
+import com.permission.core.queryable.DictionaryQuery;
+import com.permission.core.queryable.PageInfo;
 import com.permission.core.vo.DictionaryTypeVo;
+import com.permission.core.vo.DictionaryVo;
 import com.permission.core.vo.NodeTree;
 import com.permission.service.DictionaryService;
 
@@ -72,5 +75,15 @@ public class DictionaryServiceTest {
 		
 		service.recursiveTree(node1);
 		System.out.println(node1);
+	}
+	
+	@Test
+	public void testPageQuery() throws Exception{
+		
+		DictionaryQuery query = new DictionaryQuery();
+		query.setDicName("xxx");
+		
+		PageInfo<DictionaryVo> page = service.pageQuery(query);
+		System.out.println(page);
 	}
 }
