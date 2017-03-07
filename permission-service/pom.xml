@@ -1,0 +1,38 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<!-- 指定父模块的GAVA -->
+	<parent>
+		<groupId>com.startcaft.www</groupId>
+		<artifactId>management-system-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath />
+	</parent>
+	
+	<artifactId>permission-service</artifactId>
+	<packaging>jar</packaging>
+	
+	<dependencies>
+		<!-- 依赖 permission-repository -->
+		<dependency>
+			<groupId>com.startcaft.www</groupId>
+			<artifactId>permission-repository</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<!-- 编译插件，指定JDK版本，属性jdk.version定义在父模块 -->
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	
+</project>
