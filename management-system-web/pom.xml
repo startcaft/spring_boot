@@ -9,6 +9,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath />
 	</parent>
+	
 	<artifactId>management-system-web</artifactId>
 	<packaging>war</packaging>
 
@@ -35,7 +36,7 @@
 		<!-- 依赖 permission-repository -->
 		<dependency>
 			<groupId>com.startcaft.www</groupId>
-			<artifactId>permission-repository</artifactId>
+			<artifactId>permission-service</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<!-- mysql jdbc driver -->

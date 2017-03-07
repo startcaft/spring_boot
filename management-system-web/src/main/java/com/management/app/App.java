@@ -10,10 +10,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 
 @SpringBootApplication
-@ComponentScan(basePackages={
-		"com.management.config",
-		"com.permission.service"
-})																			//扫描各种Bean所在的包，默认为Application所在的包以及子包
+@ComponentScan(basePackages={"com.permission.service","com.management.app"})
 @EntityScan(basePackages={"com.permission.core.entity"})					//扫描实体类所在的包
 @EnableJpaRepositories(basePackages={"com.permission.repository"})			//扫描Jpa Repository所在的包
 public class App extends SpringBootServletInitializer {

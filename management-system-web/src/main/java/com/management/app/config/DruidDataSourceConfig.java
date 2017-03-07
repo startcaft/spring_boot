@@ -1,4 +1,4 @@
-package com.management.config;
+package com.management.app.config;
 
 import java.sql.SQLException;
 import javax.sql.DataSource;
