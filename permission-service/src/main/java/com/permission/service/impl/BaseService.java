@@ -9,8 +9,14 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
+import com.permission.core.exception.ParamterNullException;
+import com.permission.core.queryable.PageRequest;
 
 
 
@@ -32,7 +38,48 @@ public abstract class BaseService {
 //	 */
 //	protected static final String DIC_TYPE_CACHE_KEY_PREFIX = "'dic_type_'";
 	
+	/**
+	 * 构建Pageable实例。所有的分页查询都是通用的
+	 */
+	protected final Pageable buildPageableInstance(PageRequest query) throws Exception{
+		{
+			if(query == null){
+				throw new ParamterNullException("query", PageRequest.class);
+			}
+		}
+		
+		//构建Pageable实例，它的pageIndex是从0开始的。
+		int pageIndex,pageSize;
+		if (query.getPage() <= 0) {
+			pageIndex = 0;
+		}
+		else{
+			pageIndex = query.getPage() - 1;
+		}
+		if(query.getRows() <= 0){
+			pageSize = 20;
+		}
+		else{
+			pageSize = query.getRows();
+		}
+		Direction direction;
+		if(query.getOrderDirection().equalsIgnoreCase("desc")){
+			direction = Direction.DESC;
+		}
+		else{
+			direction = Direction.ASC;
+		}
+		Order order = new Order(direction, query.getSortField());
+		Sort sort = new Sort(order);
+		Pageable pageable = new org.springframework.data.domain.PageRequest(pageIndex, pageSize, sort);
+		
+		return pageable;
+	}
 	
+	
+	
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * 构建 根据父节点查询 的Specification实现
 	 * 

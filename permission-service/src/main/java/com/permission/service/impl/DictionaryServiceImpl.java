@@ -16,11 +16,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -265,51 +261,25 @@ public class DictionaryServiceImpl extends BaseService implements DictionaryServ
 	@Override
 	public PageInfo<DictionaryVo> pageQuery(DictionaryQuery query) throws Exception {
 		{
-			if(query == null){
-				throw new ParamterNullException("query", DictionaryQuery.class);
-			}
-		}
-		//构建Pageable对象，pageIndex是从0开始的
-		int pageIndex,pageSize;
-		if (query.getPage() <= 0) {
-			pageIndex = 0;
-		}
-		else{
-			pageIndex = query.getPage() - 1;
-		}
-		if(query.getRows() <= 0){
-			pageSize = 20;
-		}
-		else{
-			pageSize = query.getRows();
-		}
-		Direction direction;
-		if(query.getSort().equalsIgnoreCase("desc")){
-			direction = Direction.DESC;
-		}
-		else{
-			direction = Direction.ASC;
-		}
-		Order order = new Order(direction, query.getOrder());
-		Sort sort = new Sort(order);
-		Pageable pageable = new PageRequest(pageIndex, pageSize, sort);
-		//执行select
-		Page<Dictionary> page = itemRepo.findAll(this.getWhereClause(query), pageable);
-		List<DictionaryVo> voList = new ArrayList<>();
-		if(!page.getContent().isEmpty()){
-			for (Dictionary model : page.getContent()) {
-				DictionaryVo vo = new DictionaryVo();
-				BeanUtils.copyProperties(model, vo);
-				if(model.getDictionaryType() != null){
-					vo.setDicTypeId(model.getDictionaryType().getId());
-					vo.setDicTypeName(model.getDictionaryType().getName());
+			Pageable pageable = this.buildPageableInstance(query);
+			//执行select
+			Page<Dictionary> page = itemRepo.findAll(this.getWhereClause(query), pageable);
+			List<DictionaryVo> voList = new ArrayList<>();
+			if(!page.getContent().isEmpty()){
+				for (Dictionary model : page.getContent()) {
+					DictionaryVo vo = new DictionaryVo();
+					BeanUtils.copyProperties(model, vo);
+					if(model.getDictionaryType() != null){
+						vo.setDicTypeId(model.getDictionaryType().getId());
+						vo.setDicTypeName(model.getDictionaryType().getName());
+					}
+					
+					voList.add(vo);
 				}
-				
-				voList.add(vo);
 			}
+			
+			return new PageInfo<DictionaryVo>(page.getNumber() + 1,page.getTotalPages(),page.getTotalElements(),voList);
 		}
-		
-		return new PageInfo<DictionaryVo>(page.getNumber() + 1,page.getTotalPages(),page.getTotalElements(),voList);
 	}
 	
 	
@@ -323,14 +293,21 @@ public class DictionaryServiceImpl extends BaseService implements DictionaryServ
 				@Override
 				public Predicate toPredicate(Root<Dictionary> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 					List<Predicate> predicate = new ArrayList<>();
-					if (queryVo.getDicTypeId() != null || queryVo.getDicTypeId().intValue() != 0) {
-						predicate.add(cb.equal(root.get("id").as(Integer.class), queryVo.getDicTypeId()));
+					Join<Dictionary, DictionaryType> joinDicType = root.join("dictionaryType", JoinType.INNER);//关联查询
+					
+					//关联查询id
+					if (queryVo.getDicTypeId() != null && queryVo.getDicTypeId().intValue() != 0) {
+						Path<Integer> dicTypeIdPath = joinDicType.get("id");
+						Predicate dicTypeIdPre = cb.equal(dicTypeIdPath, queryVo.getDicTypeId());
+						predicate.add(dicTypeIdPre);
 					}
-					if (!StringUtils.isEmpty(queryVo.getDicName())) {//关联查询
-						Join<Dictionary, DictionaryType> joinDicType = root.join("dictionaryType", JoinType.INNER);
-						Path<String> joinPath = joinDicType.get("name");
-						predicate.add(cb.like(joinPath.as(String.class), "%" + queryVo.getDicName() + "%"));
+					//关联查询name
+					if (!StringUtils.isEmpty(queryVo.getDicName())) {
+						Path<String> dicTypeNamePath = joinDicType.get("name");
+						Predicate dicTypeNamePre = cb.like(dicTypeNamePath, "%" + queryVo.getDicName() + "%");
+						predicate.add(dicTypeNamePre);
 					}
+					
 					Predicate[] pres = new Predicate[predicate.size()];
 					return query.where(predicate.toArray(pres)).getRestriction();
 				}
