@@ -91,10 +91,10 @@ public abstract class BaseService {
 				}
 				return null;
 			}
-			Join<T, T> parentJoin = root.join(this.joinAttributeName, JoinType.INNER);
+			Join<T, T> parentJoin = root.join(this.joinAttributeName, JoinType.INNER);//inner join
 			String attrName = StringUtils.isEmpty(this.searchAttributeName) ? "id" : this.searchAttributeName;
 			
-			Path<String> parentIdPath = parentJoin.get(attrName);
+			Path<String> parentIdPath = parentJoin.get(attrName);//where id = ?
 			return cb.equal(parentIdPath, this.searchAttributeValue);
 		}
 	}
