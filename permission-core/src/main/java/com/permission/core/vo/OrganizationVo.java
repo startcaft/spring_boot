@@ -2,7 +2,7 @@ package com.permission.core.vo;
 
 import java.util.Date;
 
-public class OrganizationVo implements java.io.Serializable {
+public class OrganizationVo extends IdVo implements java.io.Serializable {
 
 	/**
 	 * 
@@ -18,6 +18,7 @@ public class OrganizationVo implements java.io.Serializable {
 	
 	private Integer pid;
 	private String pName;
+	
 	public String getName() {
 		return name;
 	}

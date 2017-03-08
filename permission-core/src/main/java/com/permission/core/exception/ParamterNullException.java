@@ -1,5 +1,8 @@
 package com.permission.core.exception;
 
+/**
+ * 自定义异常：标识方法入参为空
+ */
 public class ParamterNullException extends Exception {
 	
 	/**
