@@ -1,6 +1,5 @@
 package com.service.test;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,8 @@ import com.permission.core.queryable.PageInfo;
 import com.permission.core.vo.DictionaryTypeVo;
 import com.permission.core.vo.DictionaryVo;
 import com.permission.core.vo.NodeTree;
-import com.permission.service.DictionaryService;
+import com.permission.service.DictionaryItemService;
+import com.permission.service.DictionaryTypeService;
 
 
 @SpringBootTest(classes=App.class)
@@ -23,18 +23,10 @@ import com.permission.service.DictionaryService;
 public class DictionaryServiceTest {
 	
 	@Autowired
-	private DictionaryService service;
+	private DictionaryTypeService service;
 	
-	@Test
-	public void testCheckNameExists() throws Exception{
-		
-		String dicType = null;
-		boolean result = service.checkNameExists(dicType);
-		Assert.assertTrue(result);
-		
-		result = service.checkNameExists("xxx");
-		Assert.assertTrue(!result);
-	}
+	@Autowired
+	private DictionaryItemService itemService;
 	
 	@Test(expected=ParamterNullException.class)
 	public void testInsertRecordException() throws Exception{
@@ -83,7 +75,7 @@ public class DictionaryServiceTest {
 		DictionaryQuery query = new DictionaryQuery();
 		query.setDicName("xxx");
 		
-		PageInfo<DictionaryVo> page = service.pageQuery(query);
+		PageInfo<DictionaryVo> page = itemService.pageQuery(query);
 		System.out.println(page);
 	}
 }
