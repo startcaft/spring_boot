@@ -4,7 +4,7 @@ import java.util.Date;
 import com.permission.core.enums.ResourceEnum;
 import com.permission.core.enums.StateEnum;
 
-public class ResourceVo implements java.io.Serializable {
+public class ResourceVo extends IdVo implements java.io.Serializable {
 
 	/**
 	 * 
