@@ -8,7 +8,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import com.management.app.App;
-import com.permission.core.exception.ParamterNullException;
+import com.permission.core.exception.ParameterNullException;
 import com.permission.core.queryable.DictionaryQuery;
 import com.permission.core.queryable.PageInfo;
 import com.permission.core.vo.DictionaryTypeVo;
@@ -28,7 +28,7 @@ public class DictionaryServiceTest {
 	@Autowired
 	private DictionaryItemService itemService;
 	
-	@Test(expected=ParamterNullException.class)
+	@Test(expected=ParameterNullException.class)
 	public void testInsertRecordException() throws Exception{
 		
 		DictionaryTypeVo vo = new DictionaryTypeVo();
