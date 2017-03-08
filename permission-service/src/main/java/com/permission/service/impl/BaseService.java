@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
-import com.permission.core.exception.ParamterNullException;
+import com.permission.core.exception.ParameterNullException;
 import com.permission.core.queryable.PageRequest;
 
 
@@ -27,7 +27,7 @@ public abstract class BaseService {
 	protected final Pageable buildPageableInstance(PageRequest query) throws Exception{
 		{
 			if(query == null){
-				throw new ParamterNullException("query", PageRequest.class);
+				throw new ParameterNullException("query", PageRequest.class);
 			}
 		}
 		

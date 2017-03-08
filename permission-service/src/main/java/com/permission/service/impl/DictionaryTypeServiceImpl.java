@@ -11,7 +11,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import com.permission.core.entity.DictionaryType;
-import com.permission.core.exception.ParamterNullException;
+import com.permission.core.exception.ParameterNullException;
 import com.permission.core.exception.RecordExistException;
 import com.permission.core.exception.ServiceException;
 import com.permission.core.vo.DictionaryTypeVo;
@@ -31,7 +31,7 @@ public class DictionaryTypeServiceImpl extends BaseTreeService implements Dictio
 	public boolean insertRecord(DictionaryTypeVo vo) throws Exception {
 		{
 			if(vo == null){
-				throw new ParamterNullException("vo", DictionaryTypeVo.class);
+				throw new ParameterNullException("vo", DictionaryTypeVo.class);
 			}
 		}
 		{
@@ -71,26 +71,27 @@ public class DictionaryTypeServiceImpl extends BaseTreeService implements Dictio
 	
 	@Override
 	public void recursiveTree(NodeTree node) throws Exception {
-		
-		Specification<DictionaryType> typeSpec = new TreeSpecification<>("parentType", null, node.getId());
-		List<DictionaryType> childs = new ArrayList<>();
-		//捕获异常
-		try {
-			childs = typeRepo.findAll(typeSpec);
-		} catch (Exception e) {
-			String error = "select指定字典类别父节点时错误";
-			if (logger.isErrorEnabled()) {
-				logger.error(error, e);
+		{
+			List<DictionaryType> childs = new ArrayList<>();
+			//捕获异常
+			try {
+				Specification<DictionaryType> typeSpec = new TreeSpecification<>("parentType", null, node.getId());
+				childs = typeRepo.findAll(typeSpec);
+			} catch (Exception e) {
+				String error = "select指定字典类别父节点时错误";
+				if (logger.isErrorEnabled()) {
+					logger.error(error, e);
+				}
+				throw new ServiceException(error);
 			}
-			throw new ServiceException(error);
-		}
-		//循环子节点并递归
-		if (!childs.isEmpty()) {
-			for (DictionaryType dicType : childs) {
-				NodeTree n = new NodeTree(dicType.getId(), dicType.getParentType().getId(), dicType.getName());
-				node.getChildren().add(n);
-				
-				recursiveTree(n);//递归
+			//循环子节点并递归
+			if (!childs.isEmpty()) {
+				for (DictionaryType dicType : childs) {
+					NodeTree n = new NodeTree(dicType.getId(), dicType.getParentType().getId(), dicType.getName());
+					node.getChildren().add(n);
+					
+					recursiveTree(n);//递归
+				}
 			}
 		}
 	}
@@ -99,7 +100,7 @@ public class DictionaryTypeServiceImpl extends BaseTreeService implements Dictio
 	public DictionaryTypeVo getById(Integer id) throws Exception {
 		{
 			if (id == null) {
-				throw new ParamterNullException("id", DictionaryType.class);
+				throw new ParameterNullException("id", DictionaryType.class);
 			}
 		}
 		DictionaryTypeVo vo = new DictionaryTypeVo();
@@ -129,7 +130,7 @@ public class DictionaryTypeServiceImpl extends BaseTreeService implements Dictio
 	public boolean modifyRecord(DictionaryTypeVo vo) throws Exception {
 		{
 			if(vo == null || vo.getId() == null){
-				throw new ParamterNullException("vo或vo中的id属性", DictionaryTypeVo.class);
+				throw new ParameterNullException("vo或vo中的id属性", DictionaryTypeVo.class);
 			}
 		}
 		boolean result = false;

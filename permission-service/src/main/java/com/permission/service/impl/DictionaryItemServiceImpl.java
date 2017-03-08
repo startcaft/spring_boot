@@ -20,7 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import com.permission.core.entity.Dictionary;
 import com.permission.core.entity.DictionaryType;
-import com.permission.core.exception.ParamterNullException;
+import com.permission.core.enums.StateEnum;
+import com.permission.core.exception.ParameterNullException;
 import com.permission.core.exception.ServiceException;
 import com.permission.core.queryable.DictionaryQuery;
 import com.permission.core.queryable.PageInfo;
@@ -40,7 +41,7 @@ public class DictionaryItemServiceImpl extends BaseService implements Dictionary
 	public boolean insertDicItem(DictionaryVo vo) throws Exception {
 		{
 			if(vo == null){
-				throw new ParamterNullException("vo", DictionaryVo.class);
+				throw new ParameterNullException("vo", DictionaryVo.class);
 			}
 		}
 		//执行insert操作
@@ -63,6 +64,7 @@ public class DictionaryItemServiceImpl extends BaseService implements Dictionary
 			}
 			throw new ServiceException(error);
 		}
+		vo.setState(StateEnum.ENABLE);
 		//insert成功，回传id给vo对象，以供缓存时使用
 		if(model.getId() != null){
 			vo.setId(model.getId());
@@ -75,7 +77,7 @@ public class DictionaryItemServiceImpl extends BaseService implements Dictionary
 	public boolean modifyDicItem(DictionaryVo vo) throws Exception {
 		{
 			if(vo == null || vo.getId() == null){
-				throw new ParamterNullException("vo或者vo中的id属性", DictionaryVo.class);
+				throw new ParameterNullException("vo或者vo中的id属性", DictionaryVo.class);
 			}
 		}
 		boolean result = false;
@@ -106,7 +108,7 @@ public class DictionaryItemServiceImpl extends BaseService implements Dictionary
 	public List<DictionaryVo> getByTypeId(Integer typeId) throws Exception {
 		{
 			if(typeId == null || typeId.intValue() == 0){
-				throw new ParamterNullException("typeId", Integer.class);
+				throw new ParameterNullException("typeId", Integer.class);
 			}
 		}
 		List<DictionaryVo> voList = new ArrayList<>();
@@ -141,7 +143,7 @@ public class DictionaryItemServiceImpl extends BaseService implements Dictionary
 	public DictionaryVo getDetail(Integer id) throws Exception {
 		{
 			if(id == null || id.intValue() == 0){
-				throw new ParamterNullException("id", Integer.class);
+				throw new ParameterNullException("id", Integer.class);
 			}
 		}
 		DictionaryVo vo = new DictionaryVo();
