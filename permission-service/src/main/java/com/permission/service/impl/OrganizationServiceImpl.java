@@ -45,6 +45,10 @@ public class OrganizationServiceImpl extends BaseTreeService implements Organiza
 			if(this.checkNameExists(vo.getName())){
 				throw new RecordExistException("组织(部门)名称");
 			}
+			//再检查顶层节点的组织(部门)的个数，>0 抛出异常，只能有一个顶层组织(部门)
+			if (this.getTopOrgCount() > 0) {
+				throw new ServiceException("只能存在一个顶层的组织(部门)");
+			}
 			//填充Entity对象
 			Organization model = new Organization();
 			BeanUtils.copyProperties(vo, model);
@@ -180,10 +184,11 @@ public class OrganizationServiceImpl extends BaseTreeService implements Organiza
 		}
 	}
 	
-	/*******************************私有方法 *****************************************/
+	//////////////////////////////////////////私有方法////////////////////////////////////////////////////
 	
-	/*
+	/**
 	 * 递归删除部门，先判断该部门下是否有用户
+	 * @param org 指定的组织(部门)对象
 	 */
 	private void del(Organization org) throws Exception{
 		{
@@ -203,8 +208,9 @@ public class OrganizationServiceImpl extends BaseTreeService implements Organiza
 		}
 	}
 	
-	/*
+	/**
 	 * 获取指定父节点的组织(部门)
+	 * @param pid 组织(部门)父节点id
 	 */
 	private List<Organization> getByPid(Integer pid) throws Exception{
 		{
@@ -223,7 +229,27 @@ public class OrganizationServiceImpl extends BaseTreeService implements Organiza
 		}
 	}
 	
-	/*
+	/**
+	 * 查询顶层组织(部门)的个数
+	 * @return
+	 */
+	private Integer getTopOrgCount() throws Exception {
+		{	
+			Integer count = 0;
+			try {
+				count = orgRepo.findByParentOrgIsNull();
+			} catch (Exception e) {
+				String error = "select顶层组织部门个数时错误";
+				if (logger.isErrorEnabled()) {
+					logger.error(error,e);
+				}
+				throw new ServiceException(error);
+			}
+			return count;
+		}
+	}
+	
+	/**
 	 * 检查指定的 orgName 是否存在，
 	 * @param orgName 不能为空，否则直接返回true
 	 * @return true存在/false不存在

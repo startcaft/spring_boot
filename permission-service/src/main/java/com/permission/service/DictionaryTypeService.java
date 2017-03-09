@@ -9,7 +9,7 @@ public interface DictionaryTypeService {
 	 * 保存数据
 	 * @param vo 不能为空，否则直接抛出异常
 	 */
-	boolean insertRecord(DictionaryTypeVo vo) throws Exception;
+	void insertRecord(DictionaryTypeVo vo) throws Exception;
 	
 	/**
 	 * 获取指定节点的树状结构

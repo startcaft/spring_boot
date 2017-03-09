@@ -20,6 +20,11 @@
 			<artifactId>permission-repository</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<!-- 依赖 shiro core 进行加密 -->
+		<dependency>
+		    <groupId>org.apache.shiro</groupId>
+		    <artifactId>shiro-core</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

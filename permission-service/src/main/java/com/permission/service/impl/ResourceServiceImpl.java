@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.permission.core.entity.Resource;
+import com.permission.core.enums.ResourceEnum;
 import com.permission.core.enums.StateEnum;
 import com.permission.core.exception.ParameterNullException;
 import com.permission.core.vo.NodeTree;
@@ -154,19 +155,19 @@ public class ResourceServiceImpl extends BaseTreeService implements ResourceServ
 	}
 
 	
-	/************************************私有方法**********************************************/
+	//////////////////////////////////////////私有方法////////////////////////////////////////////////////
 	
-	
-	/*
-	 * 获取指定用户，指定父节点的系统资源集合
+	/**
+	 * 获取指定用户，指定父节点的系统资源集合，
+	 * User关联到Role，Role关联到Resource
 	 */
 	private List<Resource> getchildByUser(Integer pId,Integer userId) throws Exception{
 		{
 			List<Resource> childs = new ArrayList<>();
 			try {
-				//select
+				childs = resourceRepo.queryByParentAndUser(userId, new Integer(ResourceEnum.FUNC.ordinal()), pId);
 			} catch (Exception e) {
-				String error = "select指定用户,指定父节点的系统资源时错误";
+				String error = "select指定用户,指定父节点,指定类型的系统资源时错误";
 				if (logger.isErrorEnabled()) {
 					logger.error(error, e);
 				}

@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import com.permission.core.entity.Dictionary;
 import com.permission.core.entity.DictionaryType;
+import com.permission.core.entity.DictionaryType_;
+import com.permission.core.entity.Dictionary_;
 import com.permission.core.enums.StateEnum;
 import com.permission.core.exception.ParameterNullException;
 import com.permission.core.exception.ServiceException;
@@ -203,10 +205,11 @@ public class DictionaryItemServiceImpl extends BaseService implements Dictionary
 		}
 	}
 	
-	/*************************************************私有方法*******************************************************/
+	//////////////////////////////////////////私有方法////////////////////////////////////////////////////
 	
-	/*
+	/**
 	 * 动态生成where查询语句
+	 * @param queryVo	Dictionary查询对象
 	 */
 	private Specification<Dictionary> getWhereClause(final DictionaryQuery queryVo){
 		{
@@ -214,24 +217,27 @@ public class DictionaryItemServiceImpl extends BaseService implements Dictionary
 
 				@Override
 				public Predicate toPredicate(Root<Dictionary> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-					List<Predicate> predicate = new ArrayList<>();
-					Join<Dictionary, DictionaryType> joinDicType = root.join("dictionaryType", JoinType.INNER);//关联查询
-					
-					//关联查询id
-					if (queryVo.getDicTypeId() != null && queryVo.getDicTypeId().intValue() != 0) {
-						Path<Integer> dicTypeIdPath = joinDicType.get("id");
-						Predicate dicTypeIdPre = cb.equal(dicTypeIdPath, queryVo.getDicTypeId());
-						predicate.add(dicTypeIdPre);
+					{
+						List<Predicate> predicate = new ArrayList<>();
+						Join<Dictionary, DictionaryType> joinDicType = root.join(Dictionary_.dictionaryType,JoinType.INNER);
+						//Join<Dictionary, DictionaryType> joinDicType = root.join("dictionaryType", JoinType.INNER);//关联查询
+						
+						//关联查询id
+						if (queryVo.getDicTypeId() != null && queryVo.getDicTypeId().intValue() != 0) {
+							Path<Integer> dicTypeIdPath = joinDicType.get(DictionaryType_.id);
+							Predicate dicTypeIdPre = cb.equal(dicTypeIdPath, queryVo.getDicTypeId());
+							predicate.add(dicTypeIdPre);
+						}
+						//关联查询name
+						if (!StringUtils.isEmpty(queryVo.getDicName())) {
+							Path<String> dicTypeNamePath = joinDicType.get(DictionaryType_.name);
+							Predicate dicTypeNamePre = cb.like(dicTypeNamePath, "%" + queryVo.getDicName() + "%");
+							predicate.add(dicTypeNamePre);
+						}
+						
+						Predicate[] pres = new Predicate[predicate.size()];
+						return query.where(predicate.toArray(pres)).getRestriction();
 					}
-					//关联查询name
-					if (!StringUtils.isEmpty(queryVo.getDicName())) {
-						Path<String> dicTypeNamePath = joinDicType.get("name");
-						Predicate dicTypeNamePre = cb.like(dicTypeNamePath, "%" + queryVo.getDicName() + "%");
-						predicate.add(dicTypeNamePre);
-					}
-					
-					Predicate[] pres = new Predicate[predicate.size()];
-					return query.where(predicate.toArray(pres)).getRestriction();
 				}
 			};
 		}

@@ -28,7 +28,7 @@ public class DictionaryTypeServiceImpl extends BaseTreeService implements Dictio
 	private DictionaryTypeRepository typeRepo;
 	
 	@Override
-	public boolean insertRecord(DictionaryTypeVo vo) throws Exception {
+	public void insertRecord(DictionaryTypeVo vo) throws Exception {
 		{
 			if(vo == null){
 				throw new ParameterNullException("vo", DictionaryTypeVo.class);
@@ -36,7 +36,6 @@ public class DictionaryTypeServiceImpl extends BaseTreeService implements Dictio
 		}
 		{
 			//先检查name是否重复
-			boolean result = false;
 			if(this.checkNameExists(vo.getName())){
 				throw new RecordExistException("字典类型名称");
 			}
@@ -62,10 +61,7 @@ public class DictionaryTypeServiceImpl extends BaseTreeService implements Dictio
 			//insert成功，回传id给vo对象，以供缓存时使用
 			if(model.getId() != null){
 				vo.setId(model.getId());
-				result = true;
 			}
-			
-			return result;
 		}
 	}
 	
@@ -163,9 +159,9 @@ public class DictionaryTypeServiceImpl extends BaseTreeService implements Dictio
 		return result;
 	}
 	
-	/*************************************************私有方法*******************************************************/
+	//////////////////////////////////////////私有方法////////////////////////////////////////////////////
 	
-	/*
+	/**
 	 * 检查指定的 dicTypeName 是否存在，
 	 * @param dicTypeName 不能为空，否则直接返回true
 	 * @return true存在/false不存在
