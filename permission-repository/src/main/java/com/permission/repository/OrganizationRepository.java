@@ -13,4 +13,11 @@ public interface OrganizationRepository extends JpaRepository<Organization, Inte
 	
 	@Query("select org from Organization org join  FETCH org.parentOrg where org.id = ?")
 	Organization queryById(Integer id);
+	
+	
+	/**
+	 * 查询父节点为空的组织部门
+	 */
+	//@Query("select count(o) from Organization o.parentOrg is null")
+	Integer findByParentOrgIsNull();
 }

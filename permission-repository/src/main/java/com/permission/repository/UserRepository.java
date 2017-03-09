@@ -13,4 +13,9 @@ public interface UserRepository extends JpaRepository<User, Integer>,
 
 	@Query("select u from User u left join fetch u.organization org where org.id = ?")
 	List<User> queryByOrgId(Integer orgId);
+	
+	/**
+	 * 查询指明用户名的记录，用户名是有唯一约束的
+	 */
+	User findByUsername(String username);
 }
