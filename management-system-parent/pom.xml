@@ -7,6 +7,7 @@
 	<artifactId>management-system-parent</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
+	
 	<!-- 可有可无 -->
 	<name>management-system-parent</name>
 	<url>http://maven.apache.org</url>
@@ -17,12 +18,15 @@
 		<module>../permission-repository</module>
 		<module>../permission-service</module>
 		<module>../management-system-web</module>
+		<module>../permission-api</module>
 	</modules>
 
 	<!-- 自定义属性 -->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jdk.version>1.8</jdk.version>
+		<shiro.version>1.3.2</shiro.version>
+		<swagger.version>1.0.2</swagger.version>
 	</properties>
 
 	<!-- 定义依赖管理 -->
@@ -53,6 +57,36 @@
 				<groupId>com.alibaba</groupId>
 				<artifactId>druid</artifactId>
 				<version>1.0.18</version>
+			</dependency>
+			<!-- shiro 核心包 -->
+			<dependency>
+			    <groupId>org.apache.shiro</groupId>
+			    <artifactId>shiro-core</artifactId>
+			    <version>${shiro.version}</version>
+			</dependency>
+			<!-- shiro web 支持 -->
+			<dependency>
+			    <groupId>org.apache.shiro</groupId>
+			    <artifactId>shiro-web</artifactId>
+			    <version>${shiro.version}</version>
+			</dependency>
+			<!-- shiro spring 支持 -->
+			<dependency>
+			    <groupId>org.apache.shiro</groupId>
+			    <artifactId>shiro-spring</artifactId>
+			    <version>${shiro.version}</version>
+			</dependency>
+			<!-- shiro ehcache 支持 -->
+			<dependency>
+			    <groupId>org.apache.shiro</groupId>
+			    <artifactId>shiro-ehcache</artifactId>
+			    <version>${shiro.version}</version>
+			</dependency>
+			<!-- swagger springmvc 支持 -->
+			<dependency>
+			    <groupId>com.mangofactory</groupId>
+			    <artifactId>swagger-springmvc</artifactId>
+			    <version>${swagger.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
