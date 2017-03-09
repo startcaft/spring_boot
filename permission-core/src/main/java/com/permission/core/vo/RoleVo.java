@@ -2,7 +2,7 @@ package com.permission.core.vo;
 
 import java.util.List;
 
-public class RoleVo implements java.io.Serializable {
+public class RoleVo extends IdVo implements java.io.Serializable {
 	
 	/**
 	 * 
@@ -15,7 +15,6 @@ public class RoleVo implements java.io.Serializable {
 	
 	private List<Integer> resourceIds;
 	private List<String> resourceNames;
-	
 	
 	public String getName() {
 		return name;

@@ -5,7 +5,7 @@ import java.util.List;
 import com.permission.core.enums.GenderEnum;
 import com.permission.core.enums.StateEnum;
 
-public class UserVo implements java.io.Serializable {
+public class UserVo extends IdVo implements java.io.Serializable {
 
 	/**
 	 * 

@@ -9,8 +9,11 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 @Entity
 @Table(name="sys_role")
+@DynamicUpdate(true)
 public class Role extends IdEntity {								//系统角色
 	
 	private String name; 											//角色名称，非空，唯一，长度30
