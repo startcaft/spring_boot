@@ -19,7 +19,7 @@ import com.permission.repository.ResourceRepository;
 import com.permission.service.ResourceService;
 
 @Service
-public class ResourceServiceImpl extends BaseTreeService implements ResourceService {
+public class ResourceServiceImpl extends TreeService implements ResourceService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ResourceServiceImpl.class);
 	

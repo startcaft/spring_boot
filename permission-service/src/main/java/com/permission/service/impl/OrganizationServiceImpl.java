@@ -22,7 +22,7 @@ import com.permission.repository.UserRepository;
 import com.permission.service.OrganizationService;
 
 @Service
-public class OrganizationServiceImpl extends BaseTreeService implements OrganizationService {
+public class OrganizationServiceImpl extends TreeService implements OrganizationService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(OrganizationServiceImpl.class);
 	

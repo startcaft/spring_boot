@@ -32,7 +32,7 @@ import com.permission.repository.DictionaryRepository;
 import com.permission.service.DictionaryItemService;
 
 @Service
-public class DictionaryItemServiceImpl extends BaseService implements DictionaryItemService {
+public class DictionaryItemServiceImpl extends PageService implements DictionaryItemService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(DictionaryItemServiceImpl.class);
 	

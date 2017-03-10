@@ -15,10 +15,10 @@ public interface DictionaryTypeService {
 	 * 获取指定节点的树状结构
 	 * @param node 不能为空
 	 */
-	void recursiveTree(NodeTree node) throws Exception;
+	void getDicTypeTree(NodeTree node) throws Exception;
 	
 	/**
-	 * 获取指定的字典类型
+	 * 获取指定的字典类型，没有数据则返回null
 	 * @param id
 	 */
 	DictionaryTypeVo getById(Integer id) throws Exception;
@@ -27,5 +27,5 @@ public interface DictionaryTypeService {
 	 * 更新指定的数据
 	 * @param vo 不能为空，却vo中的id不能为空
 	 */
-	boolean modifyRecord(DictionaryTypeVo vo) throws Exception;
+	void modifyRecord(DictionaryTypeVo vo) throws Exception;
 }

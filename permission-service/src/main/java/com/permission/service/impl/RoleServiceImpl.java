@@ -33,7 +33,7 @@ import com.permission.repository.RoleRepository;
 import com.permission.service.RoleService;
 
 @Service
-public class RoleServiceImpl extends BaseService implements RoleService {
+public class RoleServiceImpl extends PageService implements RoleService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(RoleServiceImpl.class);
 	

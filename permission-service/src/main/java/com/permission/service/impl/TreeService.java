@@ -16,9 +16,9 @@ import org.springframework.util.StringUtils;
  * 构建树状结构的基础Service，
  * 提供一个内部类，用于构造一个Specification接口，从而来过滤指定的父节点的数据，而后用于递归生成NodeTree对象。
  */
-public abstract class BaseTreeService extends BaseService {
+public abstract class TreeService extends BaseService {
 	
-	private static final Logger logger = LoggerFactory.getLogger(BaseTreeService.class);
+	private static final Logger logger = LoggerFactory.getLogger(TreeService.class);
 	
 	/**
 	 * 构建 根据父节点查询 的Specification实现
