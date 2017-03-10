@@ -13,7 +13,6 @@ import com.permission.core.queryable.DictionaryQuery;
 import com.permission.core.queryable.PageInfo;
 import com.permission.core.vo.DictionaryTypeVo;
 import com.permission.core.vo.DictionaryVo;
-import com.permission.core.vo.NodeTree;
 import com.permission.service.DictionaryItemService;
 import com.permission.service.DictionaryTypeService;
 
@@ -46,27 +45,6 @@ public class DictionaryServiceTest {
 		vo.setSeq(1);
 		vo.setDescription("人口基本信息包含字典");
 		service.insertRecord(vo);
-	}
-	
-	@Test
-	public void testRecursiveTree() throws Exception{
-		
-		NodeTree node = new NodeTree();
-		node.setId(13);
-		node.setName("人口基本信息包含字典");
-		
-		service.recursiveTree(node);
-		
-		System.out.println(node);
-		
-		///////////////////////////////////////////////////////
-		
-		NodeTree node1 = new NodeTree();
-		node1.setId(13);
-		node1.setName("人口基本信息包含字典");
-		
-		service.recursiveTree(node1);
-		System.out.println(node1);
 	}
 	
 	@Test
