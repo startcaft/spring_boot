@@ -26,7 +26,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jdk.version>1.8</jdk.version>
 		<shiro.version>1.3.2</shiro.version>
-		<swagger.version>1.0.2</swagger.version>
+		<springfox.swagger2.version>2.6.1</springfox.swagger2.version>
 	</properties>
 
 	<!-- 定义依赖管理 -->
@@ -82,12 +82,18 @@
 			    <artifactId>shiro-ehcache</artifactId>
 			    <version>${shiro.version}</version>
 			</dependency>
-			<!-- swagger springmvc 支持 -->
-			<dependency>
-			    <groupId>com.mangofactory</groupId>
-			    <artifactId>swagger-springmvc</artifactId>
-			    <version>${swagger.version}</version>
-			</dependency>
+			<!-- Swagger -->
+	        <dependency>
+	            <groupId>io.springfox</groupId>
+	            <artifactId>springfox-swagger2</artifactId>
+	            <version>${springfox.swagger2.version}</version>
+	        </dependency>
+			<!-- Swagger UI -->
+	        <dependency>
+	            <groupId>io.springfox</groupId>
+	            <artifactId>springfox-swagger-ui</artifactId>
+	            <version>${springfox.swagger2.version}</version>
+	        </dependency>
 		</dependencies>
 	</dependencyManagement>
 
