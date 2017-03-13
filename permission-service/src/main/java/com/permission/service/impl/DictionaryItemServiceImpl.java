@@ -40,14 +40,13 @@ public class DictionaryItemServiceImpl extends PageService implements Dictionary
 	private DictionaryRepository itemRepo;
 	
 	@Override
-	public boolean insertDicItem(DictionaryVo vo) throws Exception {
+	public void insertDicItem(DictionaryVo vo) throws Exception {
 		{
 			if(vo == null){
 				throw new ParameterNullException("vo", DictionaryVo.class);
 			}
 		}
-		//执行insert操作
-		boolean result = false;
+		//填充实体对象
 		Dictionary model = new Dictionary();
 		BeanUtils.copyProperties(vo, model);
 		if (vo.getDicTypeId() != null) {
@@ -56,7 +55,8 @@ public class DictionaryItemServiceImpl extends PageService implements Dictionary
 			
 			model.setDictionaryType(type);
 		}
-		//捕获异常
+		model.setState(StateEnum.ENABLE);
+		//执行insert操作
 		try {
 			itemRepo.save(model);
 		} catch (Exception e) {
@@ -66,23 +66,19 @@ public class DictionaryItemServiceImpl extends PageService implements Dictionary
 			}
 			throw new ServiceException(error);
 		}
-		vo.setState(StateEnum.ENABLE);
 		//insert成功，回传id给vo对象，以供缓存时使用
 		if(model.getId() != null){
 			vo.setId(model.getId());
-			result = true;
 		}
-		return result;
 	}
 
 	@Override
-	public boolean modifyDicItem(DictionaryVo vo) throws Exception {
+	public void modifyDicItem(DictionaryVo vo) throws Exception {
 		{
 			if(vo == null || vo.getId() == null){
 				throw new ParameterNullException("vo或者vo中的id属性", DictionaryVo.class);
 			}
 		}
-		boolean result = false;
 		//填充Entity对象
 		Dictionary model = new Dictionary();
 		BeanUtils.copyProperties(vo, model);
@@ -95,7 +91,6 @@ public class DictionaryItemServiceImpl extends PageService implements Dictionary
 		//捕获异常
 		try {
 			itemRepo.saveAndFlush(model);
-			result = true;
 		} catch (Exception e) {
 			String error = "update字典项时错误";
 			if (logger.isErrorEnabled()) {
@@ -103,7 +98,6 @@ public class DictionaryItemServiceImpl extends PageService implements Dictionary
 			}
 			throw new ServiceException(error);
 		}
-		return result;
 	}
 	
 	@Override

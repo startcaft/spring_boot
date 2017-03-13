@@ -10,7 +10,7 @@ import com.permission.core.queryable.PageRequest;
 /**
  * 定义一个通用的构建Pageable实例的方法(Jpa分页时用到)。
  */
-public class PageService extends TreeService {
+public abstract class PageService extends TreeService {
 	
 	/**
 	 * 构建Pageable实例。所有的分页查询都是通用的

@@ -11,12 +11,12 @@ public interface DictionaryItemService {
 	/**
 	 * 添加字典项目
 	 */
-	boolean insertDicItem(DictionaryVo vo) throws Exception;
+	void insertDicItem(DictionaryVo vo) throws Exception;
 	
 	/**
 	 * 修改字典项
 	 */
-	boolean modifyDicItem(DictionaryVo vo) throws Exception;
+	void modifyDicItem(DictionaryVo vo) throws Exception;
 	
 	/**
 	 * 获取指定dic_type_id的字典项记录
