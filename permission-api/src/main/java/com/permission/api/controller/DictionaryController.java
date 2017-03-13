@@ -7,8 +7,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.permission.core.enums.StateEnum;
 import com.permission.core.vo.DictionaryTypeVo;
+import com.permission.core.vo.DictionaryVo;
 import com.permission.core.vo.NodeTree;
+import com.permission.service.DictionaryItemService;
 import com.permission.service.DictionaryTypeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -22,6 +26,9 @@ public class DictionaryController extends BaseController {
 	
 	@Autowired
 	private DictionaryTypeService dicTypeService;
+	
+	@Autowired
+	private DictionaryItemService itemService;
 	
 	@ApiOperation(value="添加一个新的字典类别",consumes=MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	@ApiImplicitParams({
@@ -129,6 +136,82 @@ public class DictionaryController extends BaseController {
 				result.setTipInfo(e.getMessage());
 			}
 			return result;
+		}
+	}
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	@ApiOperation(value="添加字典项目",consumes=MediaType.APPLICATION_FORM_URLENCODED_VALUE,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="name",required=true,dataType="String",paramType="form",value="字典项名称"),
+		@ApiImplicitParam(name="code",required=false,dataType="String",paramType="form",value="字典项编码"),
+		@ApiImplicitParam(name="seq",required=true,defaultValue="1",dataType="int",paramType="form",value="字典项目排序标识，默认1"),
+		@ApiImplicitParam(name="typeid",required=true,dataType="int",paramType="form",value="字典项所属的字典类别主键ID")
+	})
+	@RequestMapping(value="/item",method=RequestMethod.POST,consumes={MediaType.APPLICATION_FORM_URLENCODED_VALUE},produces={MediaType.APPLICATION_JSON_UTF8_VALUE})
+	public JSONResult addDicItem(@RequestParam(value="name",required=true) String name,
+								@RequestParam(value="code",required=false) String code,
+								@RequestParam(value="seq",required=true,defaultValue="1") Integer seq,
+								@RequestParam(value="typeid",required=true) Integer dicTypeId){
+		{
+			JSONResult json = new JSONResult();
+			DictionaryVo vo = new DictionaryVo();
+			vo.setName(name);
+			vo.setCode(code);
+			vo.setSeq(seq);
+			vo.setDicTypeId(dicTypeId);
+			try {
+				itemService.insertDicItem(vo);
+				json.setSuccess(true);
+				json.setResponse(vo);
+			} catch (Exception e) {
+				json.setTipInfo(e.getMessage());
+			}
+			return json;
+		}
+	}
+	
+	@ApiOperation(value="修改字典项目",consumes=MediaType.APPLICATION_FORM_URLENCODED_VALUE,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="itemid",required=true,dataType="int",paramType="path",value="字典项目主键ID"),
+		@ApiImplicitParam(name="name",required=true,dataType="String",paramType="form",value="字典项名称"),
+		@ApiImplicitParam(name="code",required=false,dataType="String",paramType="form",value="字典项编码"),
+		@ApiImplicitParam(name="seq",required=true,dataType="int",paramType="form",value="字典项目排序标识"),
+		@ApiImplicitParam(name="state",required=true,dataType="int",paramType="form",value="字典项目状态，0启用1停用"),
+		@ApiImplicitParam(name="typeid",required=true,dataType="int",paramType="form",value="字典项所属的字典类别主键ID")
+	})
+	@RequestMapping(value="/item/{itemid}",method=RequestMethod.POST,consumes={MediaType.APPLICATION_FORM_URLENCODED_VALUE},produces={MediaType.APPLICATION_JSON_UTF8_VALUE})
+	public JSONResult updateItem(
+								@PathVariable(value="itemid",required=true) Integer itemId,
+								@RequestParam(value="name",required=true) String name,
+								@RequestParam(value="code",required=false) String code,
+								@RequestParam(value="seq",required=true) Integer seq,
+								@RequestParam(value="state",required=true) Integer state,
+								@RequestParam(value="typeid",required=true) Integer dicTypeId){
+		{
+			JSONResult json = new JSONResult();
+			DictionaryVo vo = new DictionaryVo();
+			vo.setId(itemId);
+			vo.setCode(code);
+			vo.setName(name);
+			vo.setSeq(seq);
+			vo.setDicTypeId(dicTypeId);
+			StateEnum sEnum;
+			try {
+				sEnum = StateEnum.values()[state];
+			} catch (Exception e) {
+				json.setTipInfo("无效的字典项目state值");
+				return json;
+			}
+			vo.setState(sEnum);
+			
+			try {
+				itemService.modifyDicItem(vo);
+				json.setSuccess(true);
+			} catch (Exception e) {
+				json.setTipInfo(e.getMessage());
+			}
+			return json;
 		}
 	}
 }
