@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+	
+	<!-- 加载类路径下的redis.properties属性文件 -->
+	<context:property-placeholder location="classpath:redis.properties"/>
+	
+	<!-- 定义连接工厂 -->
+	<bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+		<constructor-arg index="0" ref="jedisPoolConfig"/>
+		<property name="hostName" value="${redis.host}"/>
+		<property name="port" value="${redis.port}"/>
+		<property name="timeout" value="${redis.timeout}"/>
+	</bean>
+	
+	<!-- 定义redisTemplate：它提供了对Jedis进行的通用API操作 -->
+	<!-- SDR默认采用JDK的序列化机制，使用JdkSerializationRedisSerializer类，进行对象和byte[]之间的相互转换 -->
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+		<property name="connectionFactory" ref="jedisConnectionFactory"/>
+		<property name="keySerializer">
+			<bean class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+		</property>
+	</bean>
+	
+	<!-- 定义dao -->
+	<bean id="userDao" class="com.redis.dao.UserStorage">
+		<property name="redisTemplate" ref="redisTemplate"/>
+	</bean>
+	
+	<!-- redis连接池配置对象 -->
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxTotal" value="${redis.pool.maxActive}"></property>
+		<property name="maxIdle" value="${redis.pool.maxIdle}"></property>
+		<property name="minIdle" value="${redis.pool.minIdle}"></property>
+		<property name="maxWaitMillis" value="${redis.pool.maxWait}"></property>
+	</bean>
+	
+	<!-- redis连接池对象 -->
+	<bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+		<constructor-arg index="0" ref="jedisPoolConfig"/>
+		<constructor-arg index="1" value="${redis.host}"/>
+		<constructor-arg index="2" value="${redis.port}" type="int"/>
+		<constructor-arg index="3" value="${redis.timeout}" type="int"/>
+		<!-- 服务端没设密码，就不要给password这个构造函数赋值，不然服务端会认为需要认证，但是又没设置密码而报错 -->
+	</bean>
+
+</beans>

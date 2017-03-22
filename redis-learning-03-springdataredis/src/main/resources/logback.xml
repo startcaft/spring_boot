@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 second" debug="false">
+
+	<!-- 负责向控制台输出日志 -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>
+				[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%5level] [%thread] %logger{0}
+				%msg%n
+			</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+	
+	<logger name="com.redis.javabeans" />
+	<logger name="org.springframework" />
+
+	<root level="DEBUG">
+		<appender-ref ref="STDOUT" />
+        <!--<appender-ref ref="DEBUG"/> -->
+        <!--<appender-ref ref="EXCEPTION"/> -->
+        <!--<appender-ref ref="INFO"/> -->
+        <!--<appender-ref ref="ASYNC"/> -->
+	</root>
+
+</configuration>
